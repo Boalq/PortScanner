@@ -3,18 +3,14 @@ package main
 import (
 	"fmt"
 	"port-scanner/port"
-	"os"
+	"flag"
 )
 
 func main() {
-	flag := ""
+	var search_flag string;
 
-	if(len(os.Args) != 2){
-		fmt.Printf("Usage:\n program... \n\t -a = Scan all ports \n\t -o = Scan all open Ports \n\t -c = Scan all closed Ports")
-		return
-	}
-
-	flag = os.Args[1]
+	flag.StringVar(&search_flag, "search", "a", "Usage: ./program -search=... \n\t\t\t a = for all ports \n\t\t\t o = for open ports \n\t\t\t c = for closed ports")
+	flag.Parse()
 
 	fmt.Println("Boalq's Port Scanner in Go:");
 
@@ -24,6 +20,6 @@ func main() {
 	fmt.Scanln(&hostname)
 	fmt.Printf("\nPorts:\n")
 
-	results := port.InitialScan(hostname, flag)
+	results := port.InitialScan(hostname, search_flag)
 	fmt.Println(results)
 }

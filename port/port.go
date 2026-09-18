@@ -49,11 +49,11 @@ func InitialScan(hostname, flag string) []ScanResult {
 	for i := 1; i <= 1024; i++ {
 		result := ScanPort("tcp", hostname, i)
 
-		if result.State == "Open" && flag == "-o"{
+		if result.State == "Open" && flag == "o"{
 			results = append(results, result)
-		} else if result.State == "Closed" && flag == "-c" {
+		} else if result.State == "Closed" && flag == "c" {
 			results = append(results, result)
-		} else if flag == "-a" {
+		} else if flag == "a" {
 			results = append(results, result)
 		}
 	}
