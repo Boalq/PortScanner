@@ -38,12 +38,14 @@ func grabBanner(conn net.Conn) string {
 	return strings.TrimSpace(string(buf[:n]))
 }
 
-func InitialScan(hostname, flag string) []ScanResult {
+func InitialScan(hostname, flag string, ch chan<-[]ScanResult){
 	var results []ScanResult
+	defer close(ch)
 
-	if !isValidHost(hostname){
+	err := isValidHost(hostname)
+	if err != nil{
 		fmt.Println("Invalid Host: '", hostname, "'")
-		return results
+		return 
 	}
 
 	for i := 1; i <= 1024; i++ {
@@ -58,10 +60,10 @@ func InitialScan(hostname, flag string) []ScanResult {
 		}
 	}
 
-	return results
+	ch <- results
 }
 
-func isValidHost(hostname string) bool {
+func isValidHost(hostname string) error {
 	_, err := net.LookupHost(hostname)
-	return err == nil
+	return err
 }

@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"port-scanner/port"
-	"flag"
 )
 
 func main() {
@@ -20,6 +20,12 @@ func main() {
 	fmt.Scanln(&hostname)
 	fmt.Printf("\nPorts:\n")
 
-	results := port.InitialScan(hostname, search_flag)
-	fmt.Println(results)
+	ch := make(chan []port.ScanResult, 1)
+
+	go port.InitialScan(hostname, search_flag, ch)
+	defer close(ch)
+
+	result := <- ch
+
+	fmt.Println(result)
 }
