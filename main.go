@@ -20,12 +20,7 @@ func main() {
 	fmt.Scanln(&hostname)
 	fmt.Printf("\nPorts:\n")
 
-	ch := make(chan []port.ScanResult, 1)
-
-	go port.InitialScan(hostname, search_flag, ch)
-	defer close(ch)
-
-	result := <- ch
+	result := port.InitialScan(hostname, search_flag)
 
 	fmt.Println(result)
 }
